@@ -63,6 +63,7 @@ export function configureFakeBackend() {
 
                 return ok({
                     id: user.id,
+                    member_id: user.member_id,
                     email: user.email,
                     title: user.title,
                     firstName: user.firstName,

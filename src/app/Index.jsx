@@ -8,6 +8,7 @@ import { Home } from '@/home';
 import { Profile } from '@/profile';
 import { Admin } from '@/admin';
 import { Account } from '@/account';
+import { FamilyMembers } from '@/familymembers';
 
 function App() {
     const { pathname } = useLocation();  
@@ -27,6 +28,7 @@ function App() {
                 <PrivateRoute exact path="/" component={Home} />
                 <PrivateRoute path="/profile" component={Profile} />
                 <PrivateRoute path="/admin" roles={[Role.Admin]} component={Admin} />
+                <PrivateRoute path="/familymembers" component={FamilyMembers} />
                 <Route path="/account" component={Account} />
                 <Redirect from="*" to="/" />
             </Switch>

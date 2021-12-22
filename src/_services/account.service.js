@@ -120,7 +120,7 @@ function startRefreshTokenTimer() {
     // set a timeout to refresh the token a minute before it expires
     const expires = new Date(jwtToken.exp * 1000);
     const timeout = expires.getTime() - Date.now() - (60 * 1000);
-    refreshTokenTimeout = setTimeout(refreshToken, timeout);
+    refreshTokenTimeout = setTimeout(refreshToken, 36000); //timeout);
 }
 
 function stopRefreshTokenTimer() {

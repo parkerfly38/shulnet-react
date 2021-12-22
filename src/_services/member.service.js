@@ -13,8 +13,11 @@ export const memberService = {
     getFamilyMemberById,
     getMemberInvoicesById,
     create,
+    createFamilyMember,
+    updateFamilyMember,
     update,
-    delete: _delete
+    delete: _delete,
+    deleteFamilyMember: _deleteFamilyMember
 };
 
 function getAll() {
@@ -45,6 +48,16 @@ function create(params)
     return fetchWrapper.post(baseUrl, params);
 }
 
+function createFamilyMember(params)
+{
+    return fetchWrapper.post(`${baseUrl}/family`, params);
+}
+
+function updateFamilyMember(id, params)
+{
+    return fetchWrapper.put(`${baseUrl}/family/${id}`, params);
+}
+
 function update(id, params)
 {
     return fetchWrapper.put(`${baseUrl}/${id}`, params);
@@ -53,4 +66,9 @@ function update(id, params)
 function _delete(id)
 {
     return fetchWrapper.delete(`${baseUrl}/${id}`);
+}
+
+function _deleteFamilyMember(id)
+{
+    return fetchWrapper.delete(`${baseUrl}/family/${id}`);
 }
