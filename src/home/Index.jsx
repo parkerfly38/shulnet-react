@@ -1,10 +1,12 @@
 import React from 'react';
+import config from 'config';
 
-import { accountService } from '@/_services';
+import { accountService, profileService } from '@/_services';
 
 function Home() {
     const user = accountService.userValue;
-    
+    const profile = 
+
     return (
         <div className="p-4">
             <div className="container">

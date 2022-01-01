@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 
 import { Role } from '@/_helpers';
-import { accountService } from '@/_services';
+import { accountService, portalService } from '@/_services';
 import { Nav, PrivateRoute, Alert } from '@/_components';
 import { Home } from '@/home';
 import { Profile } from '@/profile';
 import { Admin } from '@/admin';
 import { Account } from '@/account';
 import { FamilyMembers } from '@/familymembers';
+import { Events } from '@/events';
 
 function App() {
     const { pathname } = useLocation();  
@@ -29,6 +30,7 @@ function App() {
                 <PrivateRoute path="/profile" component={Profile} />
                 <PrivateRoute path="/admin" roles={[Role.Admin]} component={Admin} />
                 <PrivateRoute path="/familymembers" component={FamilyMembers} />
+                <PrivateRoute path="/events" component={Events} />
                 <Route path="/account" component={Account} />
                 <Redirect from="*" to="/" />
             </Switch>

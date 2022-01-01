@@ -7,7 +7,6 @@ function ListFamilyMembers({ match }) {
     const { path } = match;
     const [ familymembers, setFamilyMembers ] = useState(null);
     const user = accountService.userValue;
-    console.log(user);
 
     useEffect(() => {
         memberService.getFamilyByMemberId(user.member_id).then(x => setFamilyMembers(x));

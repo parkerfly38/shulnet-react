@@ -10,6 +10,13 @@ module.exports = {
                 loader: 'babel-loader'
             },
             {
+                test: /\.css$/,
+                use: [
+                    { loader: 'style-loader' },
+                    { loader: 'css-loader' }
+                ]
+            },
+            {
                 test: /\.less$/,
                 use: [
                     { loader: 'style-loader' },
@@ -35,6 +42,7 @@ module.exports = {
     externals: {
         // global app config object
         config: JSON.stringify({
+            profileId: '',
             apiUrl: 'http://localhost:6868'
         })
     }

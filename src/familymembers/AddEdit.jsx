@@ -9,7 +9,6 @@ function AddEdit({ history, match }) {
     const { id } = match.params;
     const isAddMode = !id;
     const user = accountService.userValue;
-    console.log(user);
 
     const initialValues = {
         first_name: '',
@@ -81,8 +80,6 @@ function AddEdit({ history, match }) {
                         memberService.getFamilyMemberById(id).then(familymember => {
                             
                             const fields = ['member_id','first_name', 'last_name', 'address_line_1','address_line_2','city','state','zip','country','phone','email','dob','hebrew_name','bnai_mitzvah_date'];
-                            
-                            //fields.forEach(field => setFieldValue(field, familymember[field], false));
                             fields.forEach(field => {
                                 if (field == 'dob')
                                 {
