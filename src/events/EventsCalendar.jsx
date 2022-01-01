@@ -14,7 +14,6 @@ function EventsCalendar({ match }) {
         const savedEvents = localStorage.getItem("events");
         if (savedEvents)
         {
-            console.log(savedEvents);
             return JSON.parse(savedEvents);
         } else {
             if (events)
@@ -37,7 +36,6 @@ function EventsCalendar({ match }) {
                 setEvents(evs);
                 }
             );
-            console.log(events);
         } else {
             eventService.getByCalendarId(id).then(x => {
                 var evs = x.map(function(row){

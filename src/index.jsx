@@ -5,6 +5,7 @@ import { render } from 'react-dom';
 import { history } from './_helpers';
 import { accountService, portalService } from './_services';
 import { App } from './app';
+import config from 'config';
 
 import './styles.less';
 import './react-big-calendar.css';
@@ -14,8 +15,8 @@ import './react-big-calendar.css';
 //configureFakeBackend();
 
 //get portal settings before startup
-const portalId = config.profileId;
-const profile = profileService.getById(portalId);
+const portalId = config.portalId;
+const portal = portalService.getById(portalId);
 
 // attempt silent token refresh before startup
 accountService.refreshToken().finally(startApp);

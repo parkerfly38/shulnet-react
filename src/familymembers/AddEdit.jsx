@@ -27,8 +27,6 @@ function AddEdit({ history, match }) {
         member_id: user.member_id
     };
 
-    console.log(initialValues);
-
     const validationSchema = Yup.object().shape({
         first_name: Yup.string()
             .required("First name is required"),

@@ -2,7 +2,7 @@ import { BehaviorSubject } from 'rxjs';
 import config from 'config';
 import { fetchWrapper, history } from '@/_helpers';
 
-const userSubject = new BehaviorSubject(null)
+const portalSubject = new BehaviorSubject(null)
 const baseUrl = `${config.apiUrl}/portal`;
 
 export const portalService = {
@@ -11,8 +11,8 @@ export const portalService = {
     create,
     update,
     delete: _delete,
-    profile: profileSubject.asObservable(),
-    get profileValue () { return profileSubject.value }
+    portal: portalSubject.asObservable(),
+    get portalValue () { return portalSubject.value }
 };
 
 function getAll()
@@ -24,7 +24,7 @@ function getById(id)
 {
     return fetchWrapper.get(`${baseUrl}/${id}`).
         then(profile => {
-            profileSubject.next(profile);
+            portalSubject.next(profile);
             return profile;
         });
 }

@@ -42,7 +42,7 @@ module.exports = {
     externals: {
         // global app config object
         config: JSON.stringify({
-            profileId: '',
+            portalId: '61cd7f9369c8751f5f52c49a',
             apiUrl: 'http://localhost:6868'
         })
     }
