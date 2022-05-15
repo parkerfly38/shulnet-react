@@ -9,13 +9,19 @@ import { VerifyEmail } from './VerifyEmail';
 import { ForgotPassword } from './ForgotPassword';
 import { ResetPassword } from './ResetPassword';
 
+import './styles.module.less';
+
 function Account({ history, match }) {
     const { path } = match;
 
     useEffect(() => {
+        document.body.classList.add('bodybg');
         // redirect to home if already logged in
         if (accountService.userValue) {
             history.push('/');
+        }
+        return () => {
+            document.body.classList.remove("bodybg");
         }
     }, []);
 
@@ -33,6 +39,9 @@ function Account({ history, match }) {
                         </Switch>
                     </div>
                 </div>
+            </div>
+            <div class="bottomrightbox">
+                Photo by <a href="https://unsplash.com/@bokcily?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Boris Ivanović</a> on <a href="https://unsplash.com/s/photos/synagogue?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
             </div>
         </div>
     );
