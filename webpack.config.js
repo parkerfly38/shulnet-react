@@ -23,7 +23,21 @@ module.exports = {
                     { loader: 'css-loader' },
                     { loader: 'less-loader' }
                 ]
-            }
+            },
+            {
+                test: /\.(png|svg|jpe?g|gif)$/,
+                include: /img/,
+                use: [
+                  {
+                    loader: 'file-loader',
+                    options: {
+                      name: '[name].[ext]',
+                      outputPath: 'img/',
+                      publicPath: 'img/'
+                    }
+                  }
+                ]
+              },
         ]
     },
     resolve: {
