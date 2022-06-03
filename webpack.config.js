@@ -57,7 +57,7 @@ module.exports = {
         // global app config object
         config: JSON.stringify({
             portalId: '61cd7f9369c8751f5f52c49a',
-            apiUrl: 'http://localhost:6868'
+            apiUrl: 'http://localhost:8080'
         })
     }
 }

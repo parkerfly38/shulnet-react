@@ -60,6 +60,11 @@ function authHeader(url) {
 
 function handleResponse(response) {
     return response.text().then(text => {
+        console.log(text);
+        if (text.indexOf("<!DOCTYPE", 0) > -1)
+        {
+            return Promise.reject();
+        }
         const data = text && JSON.parse(text);
         
         if (!response.ok) {
