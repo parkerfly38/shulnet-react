@@ -11,6 +11,7 @@ export const portalService = {
     create,
     update,
     delete: _delete,
+    getByDomain,
     portal: portalSubject.asObservable(),
     get portalValue () { return portalSubject.value }
 };
@@ -23,6 +24,15 @@ function getAll()
 function getById(id)
 {
     return fetchWrapper.get(`${baseUrl}/${id}`).
+        then(profile => {
+            portalSubject.next(profile);
+            return profile;
+        });
+}
+
+function getByDomain(domain)
+{
+    return fetchWrapper.get(`${baseUrl}/domain/${domain}`).
         then(profile => {
             portalSubject.next(profile);
             return profile;

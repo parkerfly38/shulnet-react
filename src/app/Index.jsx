@@ -16,6 +16,17 @@ function App() {
     const [user, setUser] = useState({});
 
     useEffect(() => {
+        //also get our portal def
+        portalService.getByDomain(window.location.hostname)
+            .then(data => {
+                if(!data)
+                {
+
+                } else {
+                    localStorage.setItem("portalId", data.id);
+                    localStorage.setItem("portalName", data.institution_name);
+                }
+            });
         const subscription = accountService.user.subscribe(x => setUser(x));
         return subscription.unsubscribe;
     }, []);

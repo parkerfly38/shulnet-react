@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { accountService } from '@/_services';
+import { accountService, portalService } from '@/_services';
 
 import { Login } from './Login';
 import { Register } from './Register';
@@ -12,19 +12,21 @@ import { ResetPassword } from './ResetPassword';
 import './styles.module.less';
 
 function Account({ history, match }) {
+    const [portal, setPortal] = useState();
     const { path } = match;
-
+ 
     useEffect(() => {
         const arrBodyBg = ['bodybg1','bodybg2'];
         const arrPhotoCredit = [
-            'Photo by Brian Kresge',
+            'Photo of <a href="https://www.cbisrael.org">Congregation Beth Israel in Bangor, Maine</a> by Brian Kresge',
             'Photo by <a href="https://unsplash.com/@bokcily?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Boris Ivanović</a> on <a href="https://unsplash.com/s/photos/synagogue?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>'
         ];
         const imgIndex = (Math.floor(Math.random() * (arrBodyBg.length - 1 + 1) + 1))-1;
         const bodybg = arrBodyBg[imgIndex];
-        console.log(bodybg);
         document.body.classList.add(bodybg);
         document.getElementById('photoCredit').innerHTML = arrPhotoCredit[imgIndex];
+        //setPortal(portalService.getByDomain(window.location.hostname));
+        //console.log(portal);
         // redirect to home if already logged in
         if (accountService.userValue) {
             history.push('/');

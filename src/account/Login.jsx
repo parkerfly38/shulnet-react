@@ -4,12 +4,15 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 import { accountService, alertService } from '@/_services';
+import { portalService } from '../_services/portal.service';
 
 function Login({ history, location }) {
     const initialValues = {
         email: '',
         password: ''
     };
+
+    const portalName = localStorage.getItem("portalName");
 
     const validationSchema = Yup.object().shape({
         email: Yup.string()
@@ -35,7 +38,7 @@ function Login({ history, location }) {
         <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
             {({ errors, touched, isSubmitting }) => (
                 <Form>
-                    <h3 className="card-header">Login</h3>
+                    <h3 className="card-header">Login to {portalName}</h3>
                     <div className="card-body">
                         <div className="form-group">
                             <label>Email</label>
