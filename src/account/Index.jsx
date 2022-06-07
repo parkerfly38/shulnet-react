@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Link } from 'react-router-dom';
 
 import { accountService, portalService } from '@/_services';
 
@@ -44,7 +44,19 @@ function Account({ history, match }) {
     return (
         <div className="container">
             <div className="row">
-                <div className="col-sm-8 offset-sm-2 mt-5">
+                <div className="col-sm-6 mt-5">
+                    <div className="card m-3" style={cardStyle}>
+                        <h3 className="card-header">Welcome to ShulNET</h3>
+                        <div className="card-body">
+                            <p>ShulNET is an open source, community-developed, whole synagogue management platform.</p>
+                            <p>Developed and maintained principally by members of <a href="https://www.cbisrael.org">Congregation Beth Israel</a>, the oldest synagogue in Maine, we frame features around established synagogue needs.</p>
+                        </div>
+                        <div className="card-footer">
+                            <Link to={`${path}/portal-signup`} className="btn btn-primary">Sign Your Shul Up!</Link>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-sm-6 mt-5">
                     <div className="card m-3" style={cardStyle}>
                         <Switch>
                             <Route path={`${path}/login`} component={Login} />
