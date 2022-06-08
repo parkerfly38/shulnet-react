@@ -74,10 +74,10 @@ function PortalSignup({ history, match }) {
         country: Yup.string()
             .required('Country is required.'),
         phone: Yup.string()
-            .matches(/^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/, 'Proper phone number is required.')
+            .matches(/^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/u, 'Proper phone number is required.')
             .required('A phone number is required.'),
         fax: Yup.string()
-            .matches(/^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/, 'A proper fax number is required, or leave blank.'),
+            .matches(/^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/u, 'A proper fax number is required, or leave blank.'),
         officeEmail: Yup.string()
             .email("Office email is invalid."),
         webUrl: Yup.string()
@@ -236,7 +236,7 @@ function PortalSignup({ history, match }) {
                                         </div>
                                         <div className="form-group col">
                                             <label>Country</label>
-                                            <Field name="country" as="select" className={'form-control' + (errors.country && touched.country ? ' is-valid' : '')}>
+                                            <Field name="country" as="select" className={'form-control' + (errors.country && touched.country ? ' is-invalid' : '')}>
                                                 <option>United States</option>
                                                 <option>Canada</option>
                                             </Field>

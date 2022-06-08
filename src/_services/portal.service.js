@@ -13,6 +13,7 @@ export const portalService = {
     update,
     delete: _delete,
     getByDomain,
+    portalSignup,
     portal: portalSubject.asObservable(),
     get portalValue () { return portalSubject.value }
 };
