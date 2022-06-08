@@ -1,6 +1,7 @@
 import { BehaviorSubject } from 'rxjs';
 import config from 'config';
 import { fetchWrapper, history } from '@/_helpers';
+import { accountService } from './account.service';
 
 const portalSubject = new BehaviorSubject(null)
 const baseUrl = `${config.apiUrl}/portal`;
@@ -36,6 +37,43 @@ function getByDomain(domain)
         then(profile => {
             portalSubject.next(profile);
             return profile;
+        })
+        .catch(err => {
+            return null;
+        });
+}
+
+function portalSignup(params)
+{
+    const portalPayload = {
+        institution_name: params.institution_name,
+        address_line_1: params.address_line_1,
+        address_line_2: params.address_line_2,
+        city: params.city,
+        state: params.state,
+        zip: params.zip,
+        country: params.country,
+        phone: params.phone,
+        fax: params.fax,
+        webUrl: params.webUrl,
+        officeEmail: params.officeEmail,
+        portal_domain: params.portal_domain,
+        accept_terms: params.acceptTerms
+    };
+    fetchWrapper.post(baseUrl, portalPayload)
+        .then(data => {
+            const newPortalId = data._id;
+            const newAccountPayload = {
+                title: params.title,
+                firstName: params.firstName,
+                lastName: params.lastName,
+                password: params.password,
+                role: 'admin',
+                email: params.email,
+                acceptTerms: params.acceptTerms,
+                portalId: newPortalId
+            };
+            return accountService.create(newAccountPayload);
         });
 }
 

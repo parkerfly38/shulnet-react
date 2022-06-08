@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Switch, Link } from 'react-router-dom';
-import { Formik, Field, Form, ErrorMessage, InputMask, TextField } from 'formik';
+import { Link } from 'react-router-dom';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-
 import { portalService, alertService, accountService } from '@/_services';
-
-
 import '../account/styles.module.less';
 
 function PortalSignup({ history, match }) {
@@ -22,7 +19,7 @@ function PortalSignup({ history, match }) {
         webUrl: '',
         officeEmail: '',
         portal_domain: '',
-        accept_terms: false,
+        acceptTerms: false,
         title: '',
         firstName: '',
         lastName: '',
@@ -30,10 +27,18 @@ function PortalSignup({ history, match }) {
         password: '',
         confirmPassword: ''       
     };
-    const [portal, setPortal] = useState();
+    const [domainList, setDomainList] = useState(['www']);
     const { path } = match;
 
+
     useEffect(() => {
+        portalService.getAll()
+            .then(data => {
+                for(var i = 0; i < data.length; i++)
+                {
+                    setDomainList(domainList.concat(data[i].portal_domain));
+                }
+            });
         const arrBodyBg = ['bodybg1','bodybg2'];
         const arrPhotoCredit = [
             'Photo of <a href="https://www.cbisrael.org">Congregation Beth Israel in Bangor, Maine</a> by Brian Kresge',
@@ -55,8 +60,6 @@ function PortalSignup({ history, match }) {
         }
     }, []);
 
-    const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
-
     const validationSchema = Yup.object().shape({
         institution_name: Yup.string()
             .required('Name of your synagogue/institution is required.'),
@@ -71,14 +74,17 @@ function PortalSignup({ history, match }) {
         country: Yup.string()
             .required('Country is required.'),
         phone: Yup.string()
-            .matches(phoneRegExp, 'Proper phone number is required.')
+            .matches(/^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/, 'Proper phone number is required.')
             .required('A phone number is required.'),
         fax: Yup.string()
-            .matches(phoneRegExp, 'A proper fax number is required, or leave blank.'),
+            .matches(/^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/, 'A proper fax number is required, or leave blank.'),
         officeEmail: Yup.string()
             .email("Office email is invalid."),
         webUrl: Yup.string()
             .url('Your URL must be valid.'),
+        portal_domain: Yup.string()
+            .required("A domain name is required.")
+            .notOneOf(domainList, 'Domain is already in use.'),    
         title: Yup.string()
             .required('Title is required.'),
         firstName: Yup.string()
@@ -99,10 +105,11 @@ function PortalSignup({ history, match }) {
     });
 
     function onSubmit(fields, { setStatus, setSubmitting }) {
+        console.log("onSubmit");
         setStatus();
-        accountService.register(fields)
+        portalService.portalSignup(fields)
             .then(() => {
-                alertService.success('Registration successful, please check your email for verification instructions', { keepAfterRouteChange: true });
+                alertService.success('Portal signup successful, please check your email for verification instructions', { keepAfterRouteChange: true });
                 history.push('login');
             })
             .catch(error => {
@@ -260,6 +267,11 @@ function PortalSignup({ history, match }) {
                                             <ErrorMessage name="webUrl" component="div" className="invalid-feedback" />
                                         </div>
                                     </div>
+                                    <div className="form-group">
+                                        <label>Domain (will be &lt;yourdomain&gt;.shulnet.com)</label>
+                                        <Field name="portal_domain" type="text" className={'form-control' + (errors.portal_domain && touched.portal_domain ? ' is-invalid' : '')} />
+                                        <ErrorMessage name="portal_domain" component="div" className="invalid-feedback" />
+                                    </div>
                                     <h3>Create an Admin User</h3>
                                     <div className="form-row">
                                         <div className="form-group col">
@@ -309,7 +321,7 @@ function PortalSignup({ history, match }) {
                                     <div className="form-group">
                                         <button type="submit" disabled={isSubmitting} className="btn btn-primary">
                                             {isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>}
-                                            Create Our Account!
+                                            Create Account
                                         </button>
                                         <Link to="login" className="btn btn-link">Cancel</Link>
                                     </div>
