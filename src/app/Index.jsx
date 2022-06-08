@@ -10,6 +10,7 @@ import { Admin } from '@/admin';
 import { Account } from '@/account';
 import { FamilyMembers } from '@/familymembers';
 import { Events } from '@/events';
+import { PortalSignup } from '@/portal-signup';
 
 function App() {
     const { pathname } = useLocation();  
@@ -42,6 +43,7 @@ function App() {
                 <PrivateRoute path="/admin" roles={[Role.Admin]} component={Admin} />
                 <PrivateRoute path="/familymembers" component={FamilyMembers} />
                 <PrivateRoute path="/events" component={Events} />
+                <Route path="/portal-signup" component={PortalSignup} />
                 <Route path="/account" component={Account} />
                 <Redirect from="*" to="/" />
             </Switch>

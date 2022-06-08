@@ -52,7 +52,8 @@ function Account({ history, match }) {
                             <p>Developed and maintained principally by members of <a href="https://www.cbisrael.org">Congregation Beth Israel</a>, the oldest synagogue in Maine, we frame features around established synagogue needs.</p>
                         </div>
                         <div className="card-footer">
-                            <Link to={`${path}/portal-signup`} className="btn btn-primary">Sign Your Shul Up!</Link>
+                            
+                            <Link to={`/portal-signup`} className="btn btn-primary">Sign Your Shul Up!</Link>
                         </div>
                     </div>
                 </div>
