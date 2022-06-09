@@ -16,7 +16,7 @@ function PortalSignup({ history, match }) {
         country: '',
         phone: '',
         fax: '',
-        webUrl: '',
+        webUrl: 'https://',
         officeEmail: '',
         portal_domain: '',
         acceptTerms: false,
@@ -58,7 +58,7 @@ function PortalSignup({ history, match }) {
             document.body.classList.remove("bodybg1");
             document.body.classList.remove("bodybg2");
         }
-    }, []);
+    }, []);    
 
     const validationSchema = Yup.object().shape({
         institution_name: Yup.string()
@@ -93,7 +93,20 @@ function PortalSignup({ history, match }) {
             .required('Last Name is required.'),
         email: Yup.string()
             .email('Email is invalid.')
-            .required('Email is required.'),
+            .required('Email is required.')
+            .test('Unique Email', 'Email already in use.',
+                function(value)
+                {
+                    return new Promise((resolve, reject) => {
+                        accountService.checkEmail(value)
+                            .then((res) => {
+                                resolve(true)
+                            })
+                            .catch(error => {
+                                resolve(false);
+                            })
+                    })
+                }),
         password: Yup.string()
             .min(6, 'Password must be at least 6 characters.')
             .required('Password is required.'),
@@ -105,7 +118,6 @@ function PortalSignup({ history, match }) {
     });
 
     function onSubmit(fields, { setStatus, setSubmitting }) {
-        console.log("onSubmit");
         setStatus();
         portalService.portalSignup(fields)
             .then(() => {
@@ -237,6 +249,7 @@ function PortalSignup({ history, match }) {
                                         <div className="form-group col">
                                             <label>Country</label>
                                             <Field name="country" as="select" className={'form-control' + (errors.country && touched.country ? ' is-invalid' : '')}>
+                                                <option>-- select --</option>
                                                 <option>United States</option>
                                                 <option>Canada</option>
                                             </Field>
