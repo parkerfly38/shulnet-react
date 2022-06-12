@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import { Overview } from './Overview';
 import { Users } from './users';
+import { Portals } from './portals';
 
 function Admin({ match }) {
     const { path } = match;
@@ -13,6 +14,7 @@ function Admin({ match }) {
                 <Switch>
                     <Route exact path={path} component={Overview} />
                     <Route path={`${path}/users`} component={Users} />
+                    <Route path={`${path}/portals`} component={Portals} />
                 </Switch>
             </div>
         </div>
