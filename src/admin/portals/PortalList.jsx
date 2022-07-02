@@ -9,7 +9,6 @@ function PortalList({ match }) {
 
     useEffect(() => {
         portalService.getAll().then(x => {
-            console.log(x);
             setPortals(x)
         });
     },[]);
@@ -43,7 +42,9 @@ function PortalList({ match }) {
                             <td>{portal.institution_name}</td>
                             <td>{portal.portal_domain}.shulnet.com</td>
                             <td>{portal.city}, {portal.state}</td>
-                            <td></td>
+                            <td style={{ whiteSpace: 'nowrap' }}>
+                                <Link to={`${path}/edit/${portal.id}`} className="btn btn-sm btn-primary mr-1">Edit</Link>
+                            </td>
                         </tr>
                     )}
                     {!portals &&
