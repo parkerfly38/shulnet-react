@@ -30,7 +30,6 @@ function AddEdit({ history, match }) {
         board_members: [],
         committee_chairs: [],
         portal_settings: [],
-        portal_invoices: [],
     };
 
     const [domainList, setDomainList] = useState(['www']);
@@ -83,7 +82,8 @@ function AddEdit({ history, match }) {
             {({ values, errors, touched, isSubmitting, setFieldValue }) => {
                 useEffect(() => {
                     if (!isAddMode) {
-                        portalService.getById(id).then(portal => {
+                        portalService.getById(id, true).then(portal => {
+                            console.log(portal);
                             const fields = [
                                 'institution_name',
                                 'address_line_1',
@@ -103,11 +103,10 @@ function AddEdit({ history, match }) {
                                 'officers',
                                 'board_members',
                                 'committee_chairs',
-                                'portal_settings',
-                                'portal_invoices'
+                                'portal_settings'
                             ];
                             fields.forEach(field => {
-                                setFieldValue(field, portal[0][field], false);
+                                setFieldValue(field, portal[field], false);
                             });
                         });
                     }
@@ -266,11 +265,12 @@ function AddEdit({ history, match }) {
                                                 <ErrorMessage name="portal_domain" component="div" className="invalid-feedback" />
                                             </div>
                                         </Tab>
-                                        <Tab eventKey="rabbis" title="Rabbis">
+                                        <Tab eventKey="rabbis" title="Rabbis / Cantors / Educators">
                                             <table className="table table-striped">
                                                 <thead>
                                                     <tr>
-                                                        <th>Name</th>
+                                                        <th>First Name</th>
+                                                        <th>Last Name</th>
                                                         <th>Position</th>
                                                         <th>Phone</th>
                                                         <th>Email</th>
@@ -285,8 +285,11 @@ function AddEdit({ history, match }) {
 
                                                         <tr key={index}>
                                                             <td>
-                                                                <Field name={`rabbis[${index}].last_name`} type="text" className={'form-control'} />,
+                                                                <Field name={`rabbis[${index}]._id`} type="hidden" />
                                                                 <Field name={`rabbis[${index}].first_name`} type="text" className={'form-control'} />
+                                                            </td>
+                                                            <td>
+                                                                <Field name={`rabbis[${index}].last_name`} type="text" className={'form-control'} />
                                                             </td>
                                                             <td>
                                                                 <Field name={`rabbis[${index}].title`} type="text" className="form-control" />
@@ -307,9 +310,9 @@ function AddEdit({ history, match }) {
 
                                                     )}
                                                         <tr>
-                                                            <td colSpan="5">                                                       
+                                                            <td colSpan="6">                                                       
                                                                 <button type="button" onClick={() => arrayHelpers.push('')} className="btn btn-success">
-                                                                Add a rabbi
+                                                                Add a Rabbi / Cantor / Other
 
                                                                 </button>
                                                             </td>
@@ -320,19 +323,204 @@ function AddEdit({ history, match }) {
                                             </table>
                                         </Tab>
                                         <Tab eventKey="officers" title="Officers">
-                                            <p>Officers placeholder</p>
+                                            <table className="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>First Name</th>
+                                                        <th>Last Name</th>
+                                                        <th>Position</th>
+                                                        <th>Phone</th>
+                                                        <th>Email</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                    <FieldArray name="officers" render={arrayHelpers => (
+                                                        <tbody>
+                                                            {values.officers && values.officers.length > 0 && (
+                                                                values.officers.map((officer, index) => (
+                                                                    <tr key={index}>
+                                                                        <td>
+                                                                            <Field name={`officers[${index}]._id`} type="hidden" />
+                                                                            <Field name={`officers[${index}].first_name`} type="text" className="form-control" />
+                                                                        </td>
+                                                                        <td>
+                                                                            <Field name={`officers[${index}].last_name`} type="text" className="form-control" />
+                                                                        </td>
+                                                                        <td>
+                                                                            <Field name={`officers[${index}].title`} type="text" className="form-control" />
+                                                                        </td>
+                                                                        <td>
+                                                                            <Field name={`officers[${index}].phone`} type="text" className="form-control" />
+                                                                        </td>
+                                                                        <td>
+                                                                            <Field name={`officers[${index}].email`} type="email" className="form-control" />
+                                                                        </td>
+                                                                        <td>
+                                                                            <button type="button" onClick={() => {
+                                                                                if (confirm("Really remove this officer?"))
+                                                                                { arrayHelpers.remove(index) }}} className="btn btn-danger">Remove</button>
+                                                                        </td>
+                                                                    </tr>
+                                                                ))
+                                                            )}
+                                                            <tr>
+                                                                <td colSpan="6">
+                                                                    <button type="button" onClick={() => arrayHelpers.push('')} className="btn btn-success">Add an officer</button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    )}
+                                                />
+                                            </table>
                                         </Tab>
                                         <Tab eventKey="boardMembers" title="Board Members">
-                                            <p>Board Members placeholder</p>
+                                        <table className="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>First Name</th>
+                                                        <th>Last Name</th>
+                                                        <th>Position</th>
+                                                        <th>Phone</th>
+                                                        <th>Email</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                    <FieldArray name="board_members" render={arrayHelpers => (
+                                                    <tbody>
+                                                    {values.board_members && values.board_members.length > 0 && (
+                                                        
+                                                        values.board_members.map((member, index) => (
+
+                                                        <tr key={index}>
+                                                            <td>
+                                                                <Field name={`board_members[${index}]._id`} type="hidden" />
+                                                                <Field name={`board_members[${index}].first_name`} type="text" className={'form-control'} />
+                                                            </td>
+                                                            <td>
+                                                                <Field name={`board_members[${index}].last_name`} type="text" className={'form-control'} />
+                                                            </td>
+                                                            <td>
+                                                                <Field name={`board_members[${index}].title`} type="text" className="form-control" />
+                                                            </td>
+                                                            <td>
+                                                                <Field name={`board_members[${index}].phone`} type="text" className="form-control" />
+                                                            </td>
+                                                            <td>
+                                                                <Field name={`board_members[${index}].email`} type="email" className="form-control" />
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" onClick={() => {
+                                                                    if (confirm("Really remove this board member?")) 
+                                                                    { arrayHelpers.remove(index) }}} className="btn btn-danger">Remove</button>
+                                                            </td>
+                                                        </tr>
+                                                        ))
+
+                                                    )}
+                                                        <tr>
+                                                            <td colSpan="6">                                                       
+                                                                <button type="button" onClick={() => arrayHelpers.push('')} className="btn btn-success">
+                                                                Add a Board Member
+
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+
+                                                    )} />
+                                            </table>
                                         </Tab>
                                         <Tab eventKey="committeeChairs" title="Committee Chairs">
-                                            <p>Committee chairs</p>
+                                        <table className="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>First Name</th>
+                                                        <th>Last Name</th>
+                                                        <th>Position</th>
+                                                        <th>Phone</th>
+                                                        <th>Email</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                    <FieldArray name="committee_chairs" render={arrayHelpers => (
+                                                    <tbody>
+                                                    {values.committee_chairs && values.committee_chairs.length > 0 && (
+                                                        
+                                                        values.committee_chairs.map((chair, index) => (
+
+                                                        <tr key={index}>
+                                                            <td>
+                                                                <Field name={`committee_chairs[${index}]._id`} type="hidden" />
+                                                                <Field name={`committee_chairs[${index}].first_name`} type="text" className={'form-control'} />
+                                                            </td>
+                                                            <td>
+                                                                <Field name={`committee_chairs[${index}].last_name`} type="text" className={'form-control'} />
+                                                            </td>
+                                                            <td>
+                                                                <Field name={`committee_chairs[${index}].title`} type="text" className="form-control" />
+                                                            </td>
+                                                            <td>
+                                                                <Field name={`committee_chairs[${index}].phone`} type="text" className="form-control" />
+                                                            </td>
+                                                            <td>
+                                                                <Field name={`committee_chairs[${index}].email`} type="email" className="form-control" />
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" onClick={() => {
+                                                                    if (confirm("Really remove this committee chair?")) 
+                                                                    { arrayHelpers.remove(index) }}} className="btn btn-danger">Remove</button>
+                                                            </td>
+                                                        </tr>
+                                                        ))
+
+                                                    )}
+                                                        <tr>
+                                                            <td colSpan="6">                                                       
+                                                                <button type="button" onClick={() => arrayHelpers.push('')} className="btn btn-success">
+                                                                Add a Committee Chair
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+
+                                                    )} />
+                                            </table>
                                         </Tab>
                                         <Tab eventKey="portalSettings" title="Portal Settings">
-                                            <p>Portal Settings</p>
-                                        </Tab>
-                                        <Tab eventKey="portalInvoices" title="Invoices">
-                                            <p>Invoices</p>
+                                            <table className="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Option Name</th>
+                                                        <th>Option Value</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <FieldArray name="portal_settings" render={arrayHelpers => (
+                                                <tbody>
+                                                    {values.portal_settings && values.portal_settings.length > 0 && (
+                                                        values.portal_settings.map((setting, index) => (
+                                                            <tr key={index}>
+                                                                <td>
+                                                                    <Field name={`portal_settings[${index}]._id`} type="hidden" />
+                                                                    <Field name={`portal_settings[${index}].option_name`} type="text" className="form-control" />
+                                                                </td>
+                                                                <td>
+                                                                    <Field name={`portal_settings[${index}].option_value`} type="text" className="form-control" />
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" onClick={() => { if (confirm("Really remove this portal setting?")) { arrayHelpers.remove(index) }}} className="btn btn-danger">Remove</button>
+                                                                </td>
+                                                            </tr>
+                                                        ))
+                                                    )}
+                                                    <tr>
+                                                        <td colSpan="3">
+                                                            <button type="button" onClick={() => arrayHelpers.push('')} className="btn btn-success">Add Portal Setting</button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                )} />
+                                            </table>
                                         </Tab>
                                     </Tabs>
                                 </div>

@@ -23,13 +23,22 @@ function getAll()
     return fetchWrapper.get(baseUrl);
 }
 
-function getById(id)
+function getById(id, withSettings = false)
 {
-    return fetchWrapper.get(`${baseUrl}/${id}`).
-        then(profile => {
-            portalSubject.next(profile);
-            return profile;
-        });
+    if (withSettings)
+    {
+        return fetchWrapper.get(`${baseUrl}/settings/${id}`).
+            then(profile => {
+                portalSubject.next(profile);
+                return profile;
+            });
+    } else {
+        return fetchWrapper.get(`${baseUrl}/${id}`).
+            then(profile => {
+                portalSubject.next(profile);
+                return profile;
+            });
+    }
 }
 
 function getByDomain(domain)
