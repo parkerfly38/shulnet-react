@@ -9,6 +9,7 @@ import { Profile } from '@/profile';
 import { Admin } from '@/admin';
 import { Account } from '@/account';
 import { FamilyMembers } from '@/familymembers';
+import { Yahrzeits } from '@/yahrzeits';
 import { Events } from '@/events';
 import { PortalSignup } from '@/portal-signup';
 
@@ -42,6 +43,7 @@ function App() {
                 <PrivateRoute path="/profile" component={Profile} />
                 <PrivateRoute path="/admin" roles={[Role.Admin]} component={Admin} />
                 <PrivateRoute path="/familymembers" component={FamilyMembers} />
+                <PrivateRoute path="/yahrzeits" component={Yahrzeits} />
                 <PrivateRoute path="/events" component={Events} />
                 <Route path="/portal-signup" component={PortalSignup} />
                 <Route path="/account" component={Account} />

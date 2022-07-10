@@ -51,8 +51,9 @@ function authHeader(url) {
     const user = accountService.userValue;
     const isLoggedIn = user && user.jwtToken;
     const isApiUrl = url.startsWith(config.apiUrl);
+    const portalId = localStorage.getItem("portalId")
     if (isLoggedIn && isApiUrl) {
-        return { Authorization: `Bearer ${user.jwtToken}` };
+        return { Authorization: `Bearer ${user.jwtToken}`, portal_id: portalId };
     } else {
         return {};
     }

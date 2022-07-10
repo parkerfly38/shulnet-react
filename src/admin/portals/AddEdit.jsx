@@ -69,12 +69,59 @@ function AddEdit({ history, match }) {
             .url('Your URL must be valid.'),
         portal_domain: Yup.string()
         .required("A domain name is required.")
-        .notOneOf(domainList, 'Domain is already in use.'),   
+        .test('Unique domain name', 'Domain name already in use.',
+            function(value)
+            {
+                if(isAddMode)
+                {
+                    return new Promise((resolve, reject) => {
+                        portalService.getByDomain(value)
+                            .then((res) => {
+                                console.log(res);
+                                resolve(true);
+                            })
+                            .catch(error => {
+                                resolve(false);
+                            });
+                    });
+                } else {
+                    return true;
+                }
+            })
     });
 
     function onSubmit(fields, { setStatus, setSubmitting }) {
         setStatus();
-        // add service hook
+        console.log(fields);
+        if (isAddMode) {
+            createPortal(fields, setSubmitting);
+        } else {
+            updatePortal(id, fields, setSubmitting);
+        }
+    }
+
+    function createPortal(fields, setSubmitting) {
+        portalService.create(fields)
+            .then(() => {
+                alertService.success('Portal added successfully', { keepAfterRouteChange: true });
+                history.push('.');
+            })
+            .catch(error => {
+                setSubmitting(false);
+                alertService.error(error);
+            });
+    }
+
+    function updatePortal(id, fields, setSubmitting) {
+        portalService.update(id, fields)
+            .then(() => {
+                alertService.success('Update successful', { keepAfterRouteChange: true });
+                history.push('..');
+            })
+            .catch(error => {
+                setSubmitting(false);
+                alertService.error(error);
+            });
     }
 
     return (
@@ -83,7 +130,6 @@ function AddEdit({ history, match }) {
                 useEffect(() => {
                     if (!isAddMode) {
                         portalService.getById(id, true).then(portal => {
-                            console.log(portal);
                             const fields = [
                                 'institution_name',
                                 'address_line_1',
@@ -108,6 +154,7 @@ function AddEdit({ history, match }) {
                             fields.forEach(field => {
                                 setFieldValue(field, portal[field], false);
                             });
+
                         });
                     }
                 },[]);
@@ -261,7 +308,7 @@ function AddEdit({ history, match }) {
                                             </div>
                                             <div className="form-group">
                                                 <label>Domain (will be &lt;yourdomain&gt;.shulnet.com)</label>
-                                                <Field name="portal_domain" type="text" className={'form-control' + (errors.portal_domain && touched.portal_domain ? ' is-invalid' : '')} />
+                                                <Field name="portal_domain" type="text" disabled={isAddMode ? false : true} className={'form-control' + (errors.portal_domain && touched.portal_domain ? ' is-invalid' : '')} />
                                                 <ErrorMessage name="portal_domain" component="div" className="invalid-feedback" />
                                             </div>
                                         </Tab>
@@ -523,6 +570,15 @@ function AddEdit({ history, match }) {
                                             </table>
                                         </Tab>
                                     </Tabs>
+                                    <div className="form-row">
+                                        <div className="form-group col">
+                                            <button type="submit" disabled={isSubmitting} className="btn btn-primary">
+                                                {isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>}
+                                                Save
+                                            </button>
+                                            <Link to={isAddMode ? '.' : '..'} className="btn btn-link">Cancel</Link>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

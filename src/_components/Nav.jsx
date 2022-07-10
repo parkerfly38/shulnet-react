@@ -22,6 +22,7 @@ function Nav() {
                     <NavLink exact to="/" className="nav-item nav-link">Home</NavLink>
                     <NavLink to="/profile" className="nav-item nav-link">Profile</NavLink>
                     <NavLink to="/familymembers" className="nav-item nav-link">Family Members</NavLink>
+                    <NavLink to="/yahrzeits" className="nav-item nav-link">Yahrzeits</NavLink>
                     <NavLink to="/events" className="nav-item nav-link">Events</NavLink>
                     {user.role === Role.Admin &&
                         <NavLink to="/admin" className="nav-item nav-link">Admin</NavLink>
@@ -37,6 +38,7 @@ function Nav() {
 function AdminNav({ match }) {
     const { path } = match;    
     const host = window.location.hostname;
+    const portalId = localStorage.getItem("portalId");
 
     return (
         <nav className="admin-nav navbar navbar-expand navbar-light">
@@ -44,7 +46,10 @@ function AdminNav({ match }) {
                 <NavLink to={`${path}/users`} className="nav-item nav-link">Users</NavLink>
                 {(host.indexOf("www") > -1 || host === "localhost") &&
                         <NavLink to="/admin/portals" className="nav-item nav-link">Portals</NavLink>
-                    }
+                }
+                {(host.indexOf("www") == -1 && host != "localhost") &&
+                        <NavLink to={`/admin/portals/edit/${portalId}`} className="navItem nav-link">Your Portal Details</NavLink>
+                }
             </div>
         </nav>
     );

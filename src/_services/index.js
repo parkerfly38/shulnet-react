@@ -4,3 +4,4 @@ export * from './member.service';
 export * from './calendar.service';
 export * from './event.service';
 export * from './portal.service';
+export * from './yahrzeit.service';
